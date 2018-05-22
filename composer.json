@@ -1,0 +1,33 @@
+{
+  "name": "myf/myfpdo",
+  "description": "php操作mysql pdo的orm类库",
+  "homepage": "https://github.com/iyifei/myfpdo",
+  "keywords": [
+    "php",
+    "mysql",
+    "orm",
+    "pdo",
+    "model",
+    "query",
+    "database"
+  ],
+  "authors": [
+    {
+      "name": "minyifei",
+      "email": "admin@minyifei.cn"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Myf\\": "src",
+      "Tests\\": "tests"
+    }
+  },
+  "require":{
+    "monolog/monolog": "^1.23"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7.21",
+    "phpunit/php-invoker": "^1.1"
+  }
+}
