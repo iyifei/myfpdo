@@ -18,12 +18,6 @@ interface DatabaseInterface
     public function table($name);
 
     /**
-     * 获取表名称
-     * @return mixed
-     */
-    public function getTableName();
-
-    /**
      * 获取连接名称
      * @return mixed
      */

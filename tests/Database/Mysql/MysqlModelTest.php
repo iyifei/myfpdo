@@ -240,6 +240,9 @@ class MysqlModelTest extends TestCase
 
         $rows = $userModel->selectAll('id',2);
         $this->assertEquals(current($rows)['id'],2);
+
+        $rows = $userModel->selectAll('id=1');
+        $this->assertEquals(current($rows)['id'],1);
     }
 
     public function testErrorSql(){

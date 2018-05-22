@@ -317,10 +317,8 @@ abstract class MysqlModel extends ModelAbstract
             $where = sprintf("%s=%s",$args,$bindKey);
             $bind = [$bindKey=>$value];
             $this->where($where)->bind($bind);
-        }else{
-            if(is_string($args)){
-                $this->where($args);
-            }
+        }elseif(is_string($args)){
+            $this->where($args);
         }
         return $this;
     }

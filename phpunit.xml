@@ -16,7 +16,7 @@
 >
     <logging>
         <log type="coverage-html"
-             target="./report/coverage/html/NovaService"
+             target="./report/coverage/html"
              charset="UTF-8"
              highlight="true"
              lowUpperBound="35"

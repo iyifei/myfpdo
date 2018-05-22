@@ -66,8 +66,6 @@ class Log
         $logger = self::getInstance();
         if(in_array($name,self::$methods)){
             call_user_func_array([$logger,$name],$arguments);
-        }else{
-            var_dump($name,$arguments,self::$methods);
         }
     }
 

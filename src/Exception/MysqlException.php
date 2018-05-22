@@ -20,15 +20,6 @@ class MysqlException extends \RuntimeException
 
     /**
      * 抛出异常
-     * @param \Exception $e
-     * @throws \Exception
-     */
-    public static function throwException(\Exception $e){
-        throw  new MysqlException($e->getMessage(),$e->getCode());
-    }
-
-    /**
-     * 抛出异常
      * @param $code
      * @param string $msg
      * @throws MysqlException
