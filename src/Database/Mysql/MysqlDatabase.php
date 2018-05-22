@@ -10,10 +10,12 @@ namespace Myf\Database\Mysql;
 
 use Myf\Database\DatabaseInterface;
 use Myf\Enum\ActionType;
+use Myf\Enum\MappingType;
 use Myf\Exception\ErrorCode;
 use Myf\Exception\MysqlException;
 use Myf\Libs\Log;
 use Myf\Libs\Utils;
+use Tests\Model\Model;
 
 class MysqlDatabase implements DatabaseInterface
 {
@@ -28,6 +30,11 @@ class MysqlDatabase implements DatabaseInterface
      * @var
      */
     protected $databaseName;
+
+    /**
+     * @var array
+     */
+    protected $linkMap = [];
 
     /**
      * 查询条件
@@ -411,6 +418,18 @@ class MysqlDatabase implements DatabaseInterface
                 $res = $this->connection->lastInsertId();
                 break;
         }
+        //连接模型
+        if(isset($this->optionArr['link'])){
+            switch ($action){
+                case ActionType::SELECT:
+                case ActionType::SELECT_ALL:
+                    foreach ($this->optionArr['link'] as $linkId=> $link){
+                        $link['flag']=$linkId;
+                        $res = $this->addLink($res,$link,$action);
+                    }
+                    break;
+            }
+        }
         //重置查询条件
         $this->optionArr = [];
         $sqlEndTime = Utils::getMillisecond();
@@ -424,11 +443,81 @@ class MysqlDatabase implements DatabaseInterface
     }
 
     /**
+     * 处理外联模型
+     * @param $rows
+     * @param $link
+     * @param $action
+     * @return array|mixed
+     */
+    protected function addLink($rows,$link,$action){
+        if($action==ActionType::SELECT){
+            $rows = [$rows];
+        }
+        if(!empty($rows)){
+            $key = isset($link['id'])?$link['id']:'id';
+            $fk = $link['foreign_key'];
+            $ids = array_column($rows,$key);
+            /**
+             * @var Model $linkModel
+             */
+            $linkModel = new $link['class'];
+            $linkRows = $linkModel->selectAll($fk,$ids);
+            switch ($link['type']){
+                //1对1模型
+                case MappingType::HAS_ONE:
+                    $map = array_column($linkRows,null,$fk);
+                    break;
+                //1对多模型
+                case MappingType::HAS_MANY:
+                    $map = [];
+                    foreach ($linkRows as $linkRow){
+                        $map[$linkRow[$fk]][]=$linkRow;
+                    }
+                    break;
+            }
+            foreach ($rows as $k=> $row){
+                $rkey = $row[$key];
+                if(isset($map[$rkey])){
+                    $row[$link['flag']]=$map[$rkey];
+                    $rows[$k]=$row;
+                }
+            }
+        }
+        if($action==ActionType::SELECT){
+            $rows = current($rows);
+        }
+        return $rows;
+    }
+
+    /**
      * 获取数据库名称
      * @return mixed
      */
     public function getDatabaseName()
     {
         return $this->databaseName;
+    }
+
+    /**
+     * 表连接
+     * @param $linkId
+     * @return mixed
+     */
+    public function link($linkId)
+    {
+        if(isset($this->linkMap[$linkId])){
+            $this->optionArr['link'][$linkId]=$this->linkMap[$linkId];
+        }
+        return $this;
+    }
+
+    /**
+     * 设置表连接
+     * @param $linkMap
+     * @return mixed|void
+     */
+    public function setLinkMap($linkMap)
+    {
+        $this->linkMap = $linkMap;
     }
 }

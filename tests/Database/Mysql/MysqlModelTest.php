@@ -16,6 +16,21 @@ use Tests\Model\UserModel;
 
 class MysqlModelTest extends TestCase
 {
+    public function testLink(){
+        $id = 1;
+        $userModel = new UserModel();
+        $user = $userModel
+            ->link(['userInfo','userInfoArr'])
+            ->findById($id);
+
+        $this->assertEquals($user['userInfo']['user_id'],$id);
+        $this->assertEquals($user['userInfoArr'][0]['user_id'],$id);
+
+        $users = $userModel->link('userInfo')->findAll();
+        foreach ($users as $user){
+            $this->assertEquals($user['userInfo']['user_id'],$user['id']);
+        }
+    }
 
     public function testFindFirst(){
         $userModel = new UserModel();
@@ -254,5 +269,4 @@ class MysqlModelTest extends TestCase
             $this->assertEquals($e->getCode(),ErrorCode::MYSQL_SQL_ERROR);
         }
     }
-
 }

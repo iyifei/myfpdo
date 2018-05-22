@@ -312,10 +312,16 @@ abstract class MysqlModel extends ModelAbstract
      * @return $this
      */
     protected function setOptions($args,$value=false){
-        if(gettype($value)!='boolean'){
+        if(gettype($value)!='boolean' && !empty($value)){
             $bindKey = sprintf(":%s",$args);
-            $where = sprintf("%s=%s",$args,$bindKey);
-            $bind = [$bindKey=>$value];
+            if(is_array($value)){
+                $in  = str_repeat('?,', count($value) - 1) . '?';
+                $where = sprintf("%s in(%s)",$args,$in);
+                $bind = $value;
+            }else{
+                $where = sprintf("%s=%s",$args,$bindKey);
+                $bind = [$bindKey=>$value];
+            }
             $this->where($where)->bind($bind);
         }elseif(is_string($args)){
             $this->where($args);
@@ -346,6 +352,26 @@ abstract class MysqlModel extends ModelAbstract
     public function getDatabaseName()
     {
         return $this->database->getDatabaseName();
+    }
+
+    public function link($linkId)
+    {
+        $linkIds = [];
+        if(is_string($linkId)){
+            $linkIds[]=$linkId;
+        }elseif(is_array($linkId)){
+            $linkIds = $linkId;
+        }
+        foreach ($linkIds as $linkId){
+            $this->database->link($linkId);
+        }
+        return $this;
+    }
+
+    public function setLinkMap($linkMap)
+    {
+        $this->database->setLinkMap($linkMap);
+        return $this;
     }
 
 }

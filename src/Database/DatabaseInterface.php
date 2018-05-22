@@ -144,6 +144,20 @@ interface DatabaseInterface
 
 
     /**
+     * 表连接
+     * @param $linkId
+     * @return mixed
+     */
+    public function link($linkId);
+
+    /**
+     * 设置linkMap
+     * @param $linkMap
+     * @return mixed
+     */
+    public function setLinkMap($linkMap);
+
+    /**
      * 开启事务
      * @return mixed
      */
