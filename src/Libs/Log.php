@@ -40,15 +40,16 @@ class Log
      */
     public static function getInstance(){
         if(!isset(self::$logger)){
-            self::$logger = new Logger('myfpdo');
-            if(!defined(MYF_PDO_LOG_PATH)){
-                define(MYF_PDO_LOG_PATH,'./');
+            $logId = Utils::getLogId();
+            self::$logger = new Logger($logId);
+            if(!defined('LOG_PATH')){
+                define('LOG_PATH','./');
             }
-            if(!defined(MYF_PDO_LOG_LEVEL)){
-                define(MYF_PDO_LOG_LEVEL,Logger::DEBUG);
+            if(!defined('LOG_LEVEL')){
+                define('LOG_LEVEL',Logger::DEBUG);
             }
-            $file = sprintf("%s/%s.log",MYF_PDO_LOG_PATH,date("Y-m-d"));
-            $streamHandler = new StreamHandler($file,MYF_PDO_LOG_LEVEL);
+            $file = sprintf("%s/mysql.%s.log",LOG_PATH,date("Y-m-d"));
+            $streamHandler = new StreamHandler($file,LOG_LEVEL);
             self::$logger->pushHandler($streamHandler);
 
             //反射读取logger的所有方法

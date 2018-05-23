@@ -12,6 +12,21 @@ class Utils
 {
 
     /**
+     * 获取日志记录的logId
+     * @return string
+     */
+    public static function getLogId(){
+        $key = 'MYF_LOG_ID';
+        if(isset($_SESSION[$key])){
+            $logId = $_SESSION[$key];
+        }else{
+            $logId = self::getUUID();
+            $_SESSION[$key]=$logId;
+        }
+        return $logId;
+    }
+
+    /**
      * 获取当前时间戳-精确到毫秒
      * @return float
      */
