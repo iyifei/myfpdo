@@ -31,7 +31,7 @@ class Log
 {
 
     static $logger;
-    static $methods;
+    static $methods=[];
 
     /**
      * @return Logger
@@ -41,8 +41,14 @@ class Log
     public static function getInstance(){
         if(!isset(self::$logger)){
             self::$logger = new Logger('myfpdo');
+            if(!defined(MYF_PDO_LOG_PATH)){
+                define(MYF_PDO_LOG_PATH,'./');
+            }
+            if(!defined(MYF_PDO_LOG_LEVEL)){
+                define(MYF_PDO_LOG_LEVEL,Logger::DEBUG);
+            }
             $file = sprintf("%s/%s.log",MYF_PDO_LOG_PATH,date("Y-m-d"));
-            $streamHandler = new StreamHandler($file);
+            $streamHandler = new StreamHandler($file,MYF_PDO_LOG_LEVEL);
             self::$logger->pushHandler($streamHandler);
 
             //反射读取logger的所有方法
