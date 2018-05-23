@@ -374,4 +374,15 @@ abstract class MysqlModel extends ModelAbstract
         return $this;
     }
 
+    /**
+     * @param $sql
+     * @param array $bindArr
+     * @param string $action 参考 ActionType
+     * @return mixed
+     */
+    public function execute($sql, $action, $bindArr = [])
+    {
+       return $this->database->execute($sql,$action,$bindArr);
+    }
+
 }

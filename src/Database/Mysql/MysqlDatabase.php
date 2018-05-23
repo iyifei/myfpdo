@@ -131,7 +131,7 @@ class MysqlDatabase implements DatabaseInterface
         } else {
             $action = ActionType::SELECT;
         }
-        return $this->execute($sql, $this->optionArr['bindArr'], $action);
+        return $this->execute($sql, $action, $this->optionArr['bindArr']);
     }
 
     /**
@@ -143,7 +143,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function findAllBySql($sql, $bindArr = [])
     {
-        return $this->execute($sql, $bindArr, ActionType::SELECT_ALL);
+        return $this->execute($sql, ActionType::SELECT_ALL, $bindArr);
     }
 
     /**
@@ -155,7 +155,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function findFirstBySql($sql, $bindArr = [])
     {
-        return $this->execute($sql, $bindArr, ActionType::SELECT);
+        return $this->execute($sql, ActionType::SELECT, $bindArr);
     }
 
     /**
@@ -172,7 +172,7 @@ class MysqlDatabase implements DatabaseInterface
         if (!isset($this->optionArr['bindArr'])) {
             $this->optionArr['bindArr'] = [];
         }
-        $row = $this->execute($sql, $this->optionArr['bindArr'], ActionType::SELECT);
+        $row = $this->execute($sql, ActionType::SELECT, $this->optionArr['bindArr']);
         return intval(current($row));
     }
 
@@ -185,7 +185,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function countBySql($sql, $bindArr = [])
     {
-        $row = $this->execute($sql, $bindArr, ActionType::SELECT);
+        $row = $this->execute($sql, ActionType::SELECT, $bindArr);
         return intval(current($row));
     }
 
@@ -211,7 +211,7 @@ class MysqlDatabase implements DatabaseInterface
         $value = join(',', $values);
         unset($fields, $values);
         $sql .= sprintf("(%s) VALUES (%s)", $field, $value);
-        return $this->execute($sql, $bindArr, ActionType::INSERT);
+        return $this->execute($sql, ActionType::INSERT, $bindArr);
     }
 
     /**
@@ -239,7 +239,7 @@ class MysqlDatabase implements DatabaseInterface
         if (isset($where)) {
             $sql .= sprintf(' WHERE %s ', $where);
         }
-        return $this->execute($sql, $bindArr, ActionType::UPDATE);
+        return $this->execute($sql, ActionType::UPDATE, $bindArr);
     }
 
     /**
@@ -256,7 +256,7 @@ class MysqlDatabase implements DatabaseInterface
         if (!isset($this->optionArr['bindArr'])) {
             $this->optionArr['bindArr'] = [];
         }
-        return $this->execute($sql, $this->optionArr['bindArr'], ActionType::DELETE);
+        return $this->execute($sql, ActionType::DELETE, $this->optionArr['bindArr']);
     }
 
     /**
@@ -388,12 +388,12 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * 执行全局sql
      * @param string $sql sql语句
-     * @param array $bindArr 绑定参数
      * @param string $action 执行参数
+     * @param array $bindArr 绑定参数
      * @return array|int|mixed|null|string
      * @throws MysqlException
      */
-    protected function execute($sql, $bindArr = [], $action)
+    public function execute($sql, $action, $bindArr = [])
     {
         $sqlStartTime = Utils::getMillisecond();
         $stmt = $this->connection->prepare($sql);

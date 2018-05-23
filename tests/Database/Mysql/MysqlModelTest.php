@@ -8,6 +8,7 @@
 namespace Tests\Database\Mysql;
 
 
+use Myf\Enum\ActionType;
 use Myf\Exception\ErrorCode;
 use Myf\Exception\MysqlException;
 use Myf\Libs\Log;
@@ -268,5 +269,12 @@ class MysqlModelTest extends TestCase
         }catch (MysqlException $e){
             $this->assertEquals($e->getCode(),ErrorCode::MYSQL_SQL_ERROR);
         }
+    }
+
+    public function testExecute(){
+        $sql = "select * from user ";
+        $userModel = new UserModel();
+        $rows = $userModel->execute($sql,ActionType::SELECT_ALL);
+        $this->assertEquals(count($rows),2);
     }
 }

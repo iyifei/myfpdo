@@ -176,5 +176,14 @@ interface DatabaseInterface
      */
     public function rollback();
 
+    /**
+     * 执行原生sql
+     * @param $sql
+     * @param $action
+     * @param array $bindArr
+     * @return mixed
+     */
+    public function execute($sql, $action, $bindArr = []);
+
 
 }
