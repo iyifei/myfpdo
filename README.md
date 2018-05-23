@@ -13,7 +13,25 @@ composer require iyifei/myfpdo
 
 ### 1、首选需要定义一个全局常量【MYF_PDO_LOG_PATH】用于存放log日志【MYF_PDO_LOG_LEVEL】用于定义全局log级别，其次继承MysqlModel创建一个自己的Model实现 getDbConfig()方法，示例代码如下(Model.php)：
 ```php
+bootstrap.php
+<?php
+/**
+ * tests启动类
+ * Author: 闵益飞
+ * Date: 2018/5/22
+ */
 
+use Monolog\Logger;
+
+define('APP_PATH',dirname(dirname(__FILE__)));
+require APP_PATH."/vendor/autoload.php";
+
+//日志生成目录
+define('MYF_PDO_LOG_PATH',APP_PATH."/report/logs");
+//日志级别
+define('MYF_PDO_LOG_LEVEL',Logger::DEBUG);
+
+Model.php
 <?php
 /**
  * model基类
