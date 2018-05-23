@@ -6,7 +6,7 @@
 
 ## 项目安装
 ```bash
-composer require iyifei/myfpdo
+composer require iyifei/myfpdo:dev-master
 ```
 
 ## 快速使用
