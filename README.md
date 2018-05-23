@@ -6,7 +6,7 @@
 
 ## 项目安装
 ```bash
-composer require myf/myfpdo
+composer require iyifei/myfpdo
 ```
 
 ## 快速使用
