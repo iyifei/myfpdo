@@ -17,11 +17,13 @@ class UserModel extends Model
             'type'=>MappingType::HAS_ONE,
             'class'=>UserInfoModel::class,
             'foreign_key'=>'user_id',
+            'key'=>'id',
         ],
         'userInfoArr'=>[
             'type'=>MappingType::HAS_MANY,
             'class'=>UserInfoModel::class,
             'foreign_key'=>'user_id',
+            'key'=>'id',
         ]
     ];
 

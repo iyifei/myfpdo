@@ -450,11 +450,11 @@ class MysqlDatabase implements DatabaseInterface
      * @return array|mixed
      */
     protected function addLink($rows,$link,$action){
-        if($action==ActionType::SELECT){
-            $rows = [$rows];
-        }
         if(!empty($rows)){
-            $key = isset($link['id'])?$link['id']:'id';
+            if($action==ActionType::SELECT){
+                $rows = [$rows];
+            }
+            $key = isset($link['key'])?$link['key']:'id';
             $fk = $link['foreign_key'];
             $ids = array_column($rows,$key);
             /**
@@ -482,9 +482,9 @@ class MysqlDatabase implements DatabaseInterface
                     $rows[$k]=$row;
                 }
             }
-        }
-        if($action==ActionType::SELECT){
-            $rows = current($rows);
+            if($action==ActionType::SELECT){
+                $rows = current($rows);
+            }
         }
         return $rows;
     }
