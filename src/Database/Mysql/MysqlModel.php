@@ -16,6 +16,7 @@ abstract class MysqlModel extends ModelAbstract
     protected $model;
     protected $tableName;
     protected $databaseName;
+    protected $linkMap = [];
 
     public function __construct()
     {
@@ -24,6 +25,7 @@ abstract class MysqlModel extends ModelAbstract
         $database = new MysqlDatabase($dbConfig);
         parent::__construct($database);
         $this->table($this->tableName);
+        $this->setLinkMap($this->linkMap);
     }
 
     /**

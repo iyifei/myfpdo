@@ -12,14 +12,6 @@ use Myf\Database\Mysql\MysqlModel;
 
 class Model extends MysqlModel
 {
-    protected $linkMap = [];
-
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setLinkMap($this->linkMap);
-    }
 
     /**
      * 获取数据库配置文件
