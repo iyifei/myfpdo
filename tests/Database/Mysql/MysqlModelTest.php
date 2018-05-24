@@ -231,7 +231,7 @@ class MysqlModelTest extends TestCase
             ];
             $id = $userModel->add($addData);
             //抛出异常
-            MysqlException::throeExp(1,'test rollback');
+            MysqlException::throwExp(1,'test rollback');
             $userModel->commit();
         }catch (MysqlException $e){
             $userModel->rollback();

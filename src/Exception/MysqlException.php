@@ -24,7 +24,7 @@ class MysqlException extends \RuntimeException
      * @param string $msg
      * @throws MysqlException
      */
-    public static function throeExp($code,$msg=''){
+    public static function throwExp($code,$msg=''){
         throw  new MysqlException($msg,$code);
     }
 

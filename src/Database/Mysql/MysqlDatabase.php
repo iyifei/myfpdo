@@ -198,7 +198,7 @@ class MysqlDatabase implements DatabaseInterface
     public function add($data)
     {
         if (!is_array($data)) {
-            MysqlException::throeExp(ErrorCode::MYSQL_PARAM_DATA_ERROR, 'mysql add param error');}
+            MysqlException::throwExp(ErrorCode::MYSQL_PARAM_DATA_ERROR, 'mysql add param error');}
         $sql = sprintf("INSERT INTO `%s` ", $this->table);
         $fields = $values = $bindArr = [];
         foreach ($data as $field => $value) {
@@ -225,7 +225,7 @@ class MysqlDatabase implements DatabaseInterface
     public function update($data, $where, $bindArr = [])
     {
         if (!is_array($data)) {
-            MysqlException::throeExp(ErrorCode::MYSQL_PARAM_DATA_ERROR, 'mysql update param error');}
+            MysqlException::throwExp(ErrorCode::MYSQL_PARAM_DATA_ERROR, 'mysql update param error');}
         $values = array();
         $sql = sprintf("UPDATE `%s` SET ", $this->table);
         foreach ($data as $key => $val) {
@@ -438,7 +438,7 @@ class MysqlDatabase implements DatabaseInterface
         if (!$exeRes) {
             $errorInfo = json_encode($stmt->errorInfo());
             Log::error(sprintf("execute Error=【%s】", $errorInfo));
-            MysqlException::throeExp(ErrorCode::MYSQL_SQL_ERROR, $errorInfo);}
+            MysqlException::throwExp(ErrorCode::MYSQL_SQL_ERROR, $errorInfo);}
         return $res;
     }
 

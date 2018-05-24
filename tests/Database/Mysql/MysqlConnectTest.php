@@ -87,7 +87,7 @@ class MysqlConnectTest extends TestCase
             ];
             $id = $userModel->add($addData);
             //抛出异常
-            MysqlException::throeExp(1,'test mysqlConnect rollback');
+            MysqlException::throwExp(1,'test mysqlConnect rollback');
             MysqlConnect::commit();
         }catch (MysqlException $e){
             MysqlConnect::rollback();
